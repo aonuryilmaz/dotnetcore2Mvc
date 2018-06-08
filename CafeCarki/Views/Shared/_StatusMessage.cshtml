@@ -1,0 +1,44 @@
+﻿@{
+    StatusMessageViewModel statusMessage = null;
+    if (TempData["StatusMessage"] != null)
+    {
+        statusMessage = Newtonsoft.Json.JsonConvert.DeserializeObject<StatusMessageViewModel>((string)TempData["StatusMessage"]);
+    }
+}
+@if (statusMessage != null)
+{
+    string classAlert = "alert-info";
+    if (statusMessage.Type == StatusMessageType.Danger)
+    {
+        classAlert = "alert-danger";
+    }
+    else if (statusMessage.Type == StatusMessageType.Success)
+    {
+        classAlert = "alert-success";
+    }
+    else if (statusMessage.Type == StatusMessageType.Warning)
+    {
+        classAlert = "alert-warning";
+    }
+
+    <div class="fixed-top mt-2 ml-5 mr-5" id="statatusMessageContainer" style="max-width:480px;">
+        <div class="alert @classAlert alert-dismissible fade show" role="alert" id="alertmsg">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            @if (!String.IsNullOrEmpty(statusMessage.Title))
+            {
+                <h4 class="alert-heading">@statusMessage.Title</h4>
+            }
+            @if (!String.IsNullOrEmpty(statusMessage.Message))
+            {
+                @statusMessage.Message
+            }
+        </div>
+        <script>
+            setTimeout(function () {
+                $('#alertmsg').alert('close');
+            }, 5000);
+        </script>
+    </div>
+}

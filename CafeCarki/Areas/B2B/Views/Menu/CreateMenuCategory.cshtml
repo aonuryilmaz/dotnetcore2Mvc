@@ -1,0 +1,16 @@
+﻿@model MenuCategory
+<div class="container">
+    <div class="row mt-2">
+        <div class="col-6">
+            <form asp-action="CreateMenuCategory" asp-controller="Menu" asp-area="B2B">
+                <input type="hidden" name="MenuRestaurantId" value="@ViewBag.MenuRestaurantId" />
+                <input type="hidden" name="retcatId" value="@ViewBag.ReturnCatId" />
+                <div class="form-group">
+                    <label asp-for="Name"></label>
+                    <input class="form-control" asp-for="Name" />
+                </div>
+                <button class="btn btn-success">Create</button>
+            </form>
+        </div>
+    </div>    
+</div>

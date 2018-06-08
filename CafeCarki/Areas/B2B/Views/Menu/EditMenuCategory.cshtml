@@ -1,0 +1,58 @@
+﻿@model MenuCategory
+<div class="container">
+    <div class="row mt-2">
+        <div class="col-6">
+            <form asp-action="EdtMenuCategory" asp-controller="Menu" asp-area="B2B">
+                <input type="hidden" name="MenuRestaurantId" value="@ViewBag.MenuRestaurantId" />
+                <input type="hidden" name="retcatId" value="@ViewBag.ReturnCatId" />
+                <input type="hidden" asp-for="MenuCategoryId" />
+                <div class="form-group">
+                    <label>Category Name</label>
+                    <input class="form-control" asp-for="Name" />
+                </div>
+                <button class="btn btn-primary">Edit</button>
+            </form>
+        </div>
+        <div class="col-6">
+            <div class="row">
+                <div class="col-12 mb-1">
+                    <a class="btn btn-success btn-block" asp-action="CreateMenuCategory" asp-controller="Menu" asp-area="B2B" asp-route-categoryId="@Model.MenuCategoryId">Menu Alt Kategori Ekle</a>
+                </div>
+                @if (Model.MenuCategories != null && Model.MenuCategories.Count > 0)
+                {
+                    @foreach (var item in Model.MenuCategories)
+                    {
+                        <div class="col-6">
+                            <h5 class="font-weight-bold">
+                                @item.Name
+                            </h5>                            
+                        </div>
+                        <div class="col-6">
+                            <a class="btn btn-primary btn-sm" asp-action="EditMenuCategory" asp-area="B2B" asp-controller="Menu" asp-route-categoryId="@item.MenuCategoryId"  asp-route-retcatId="@Model.MenuCategoryId" asp-route-MenuRestaurantId="@ViewBag.MenuRestaurantId">Edit</a>
+                        </div>
+                    }
+
+                }
+            </div>
+            <div class="row mt-2">
+                <div class="col-12 mb-1">
+                    <a class="btn btn-success btn-block" asp-action="CreateMenuItem" asp-controller="Menu" asp-area="B2B" asp-route-categoryId="@Model.MenuCategoryId" asp-route-MenuRestaurantId="@ViewBag.MenuRestaurantId">Menu Item Ekle</a>
+                </div>
+                @if(Model.MenuItems!=null && Model.MenuItems.Count > 0)
+                {
+                    @foreach (var item in Model.MenuItems)
+                    {
+                        <div class="col-6">
+                            <h5 class="font-weight-bold">
+                                @item.Name
+                            </h5>                           
+                        </div>
+                        <div class="col-6">
+                            <a class="btn btn-primary btn-sm" asp-action="EditMenuItem" asp-area="B2B" asp-controller="Menu" asp-route-MenuItemId="@item.MenuItemId" asp-route-categoryId="@Model.MenuCategoryId" asp-route-MenuRestaurantId="@ViewBag.MenuRestaurantId">Edit</a>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

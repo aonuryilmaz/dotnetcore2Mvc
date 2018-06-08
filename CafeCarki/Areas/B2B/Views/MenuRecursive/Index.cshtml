@@ -1,0 +1,14 @@
+﻿
+<div class="container">
+     <div class="row mt-2">         
+         <div class="col-4">   
+             <div class="col-12 mb-1">
+                 <a class="btn btn-success btn-block" asp-action="Create" asp-controller="Menu" asp-area="B2B" asp-route-ParentId="@ViewBag.ParentId">Yeni Menu Ekle</a>
+             </div>             
+             @await Component.InvokeAsync("MenuList",ViewBag.ParentId)
+         </div>
+         <div class="col-8 bg-dark">
+
+         </div>
+     </div>
+</div>

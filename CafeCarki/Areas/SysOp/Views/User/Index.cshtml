@@ -1,0 +1,119 @@
+﻿@model List<CafeCarki.Areas.SysOp.ViewModels.UserListViewModel>
+<div class="container-fluid">
+    @if (ViewBag.Msg != null)
+    {
+        <div class="alert alert-info" id="alertmsg" role="alert">
+            <strong>@ViewBag.Msg</strong>
+        </div>
+    }
+    <div class="row mt-2">
+        <div class="col-6">
+            <h1 class="font-size-xl">Kullanıcı Yönetimi</h1>
+        </div>
+        <div class="col-6">
+            <form method="get" class="form-inline justify-content-end" asp-action="Index">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="SearchString" value="@ViewBag.CurrentFilter" />
+                </div>
+                <input type="submit" value="Search" class="btn btn-default" />
+            </form>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead class="thead-inverse font-size-xxs">
+                    <tr>
+                        <th><a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSortParm">Kullanici</a> / Onay</th>
+                        <th>Rol</th>
+                        <th>Telefon</th>
+                        <th><a asp-action="Index" asp-route-sortOrder="@ViewBag.DateSortParm">Kayit Tarihi</a>/ <a asp-action="Index" asp-route-sortOrder="@ViewBag.DateLastSortParm">Son Giriş Tarihi</a></th>
+                        <th><a asp-action="Index" asp-route-sortOrder="@ViewBag.NumberOfLogins">Toplam Giriş Sayısı</a></th>
+                        <th>Adres</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        string lockoutClass = "";
+                        string lockoutText = "Hesabı Kilitle";
+                        @if (user.LockoutEnabled)
+                        {
+                            lockoutText = "Kilidi Kaldır";
+                            lockoutClass = "bg-danger";
+                        }
+                        <tr class="@lockoutClass">
+                            <td>
+                                <span class="font-weight-bold">
+                                    @user.Name @user.Surname
+                                </span>
+                                <br />
+                                <span class="font-weight-thin">
+                                    @user.Email @if (user.EmailVerify)
+                                    {<small class="bg-success text-white">Onaylandı</small> }
+                                    else
+                                    { <small class="bg-danger text-white">Onaylanmadı</small>}
+                                </span>
+                            </td>
+                            <td>
+                                @foreach (var role in user.Roles)
+                                {
+                                    <small>@role [<a asp-action="RemoveUserFromRole" asp-controller="UserRole" asp-route-area="SysOp" asp-route-userId="@user.UserId" asp-route-roleName="@role">Remove</a>]</small>
+                                    <br />
+
+                                }
+                            </td>
+                            <td>
+                                @user.MobilePhone
+                            </td>
+                            <td>
+                                @user.DateJoined
+                                <br />
+                                @user.DateLastLogin
+                            </td>
+                            <td>@user.NumberOfLogins</td>
+                            <td>@user.Ilce <br /> @user.Mahalle</td>
+                            <td>
+                                <a class="btn btn-sm btn-secondary" asp-action="Edit" asp-controller="User" asp-area="SysOp" asp-route-id="@user.UserId">Düzenle</a>
+                                <a class="btn btn-sm btn-secondary" asp-action="Ban" asp-controller="User" asp-area="SysOp" asp-route-id="@user.UserId">@lockoutText</a>
+                                <a class="btn btn-sm btn-secondary" asp-action="AddUserToRole" asp-controller="UserRole" asp-route-area="SysOp" asp-route-userId="@user.UserId">Rol Ekle</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <nav aria-label="...">
+        <ul class="pagination justify-content-center">
+            @{
+                var totalPage = ViewBag.TotalPage.Count;
+                var previus = ViewBag.Page - 1;
+                var next = ViewBag.Page + 1;
+            }
+            <li class="page-item @(ViewBag.Page==1?"disabled":"")">
+                <a class="page-link " asp-action="Index" asp-route-page="1"><i class="fa fa-step-backward"></i></a>
+            </li>
+            <li class="page-item @(ViewBag.Page==1?"disabled":"")">
+                <a class="page-link " asp-action="Index" asp-route-page="@previus"><i class="fa fa-backward"></i></a>
+            </li>
+            <li class="page-item">
+                <form asp-action="Index" method="get">
+                    <select name="page" class="page-link form-control" onchange="this.form.submit()" asp-items="@ViewBag.TotalPage"></select>
+                </form>
+            </li>
+            <li class="page-item @(ViewBag.Page==totalPage?"disabled":"")">
+                <a class="page-link " asp-action="Index" asp-route-page="@next"><i class="fa fa-forward"></i></a>
+            </li>
+            <li class="page-item @(ViewBag.Page==totalPage?"disabled":"")">
+                <a class="page-link " asp-action="Index" asp-route-page="@totalPage"><i class="fa fa-step-forward"></i></a>
+            </li>
+        </ul>
+    </nav>
+    <script>
+        setTimeout(function () {
+            $('#alertmsg').alert('close');
+        }, 2500);
+    </script>
+</div>

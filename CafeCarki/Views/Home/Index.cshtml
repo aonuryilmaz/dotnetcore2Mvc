@@ -1,0 +1,55 @@
+﻿@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@model CafeCarki.ViewModels.LoginViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewBag.FullBg = "on";
+    ViewData["Title"] = "Üye Girişi";
+    ViewBag.BackgroundOverride = "register-background";
+    ViewBag.BackgroundOverride = "bgNone";
+    Layout = "";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] -CafeUygulaması</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="container">
+                    <div class="row justify-content-center p-1 m-1 p-md-5 m-md-2">
+                        <div class="col-12 col-md-6 rounded m-1 m-md-2 p-3 p-md-5 bg-white">
+                            <h1 class="font-size-xl font-weight-thin mb-4">@ViewData["Title"]</h1>
+                            @await Html.PartialAsync("_LoginFormPartial")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/popper.js/dist/umd/popper.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await Html.PartialAsync("_ValidationScriptsPartial");
+</body>
+</html>
+
+
+
+
+
+
+
+
+

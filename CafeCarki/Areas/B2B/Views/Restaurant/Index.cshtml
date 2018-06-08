@@ -1,0 +1,108 @@
+﻿@model List<CafeCarki.Models.Restaurant>
+<div class="container bg-white">
+    <div class="row mt-2">
+        <div class="col-6">
+            <h3 class="font-weight-light">Restaurant List</h3>
+        </div>
+        <div class="col-6 text-right">
+            <form method="post" class="form-inline justify-content-end" asp-action="Create" asp-controller="Restaurant" asp-area="B2B">
+                <input type="text" name="name" class="form-control" />
+                <button class="btn btn-success">Yeni Restoran</button>
+            </form>
+        </div>
+    </div>
+    @if (Model.Count > 0 && Model != null)
+    {
+        <div class="row">
+            <div class="col-12">
+                <table class=" table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Restaurant Name</th>
+                            <th>Address Name</th>
+                            <th>Subeler</th>
+                            <th>Menu</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+
+                            <tr>
+                                <td>@item.Name</td>
+                                <td>
+                                    @if (item.Address == null)
+                                    {
+                                        <a class="btn btn-success" asp-action="Create" asp-controller="Address" asp-area="B2B" asp-route-restaurantId="@item.RestaurantId">Adres Ekle</a>
+                                    }
+                                    else
+                                    {
+                                        @item.Address.AddressName
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.Sube != null && item.Sube.Count > 0)
+                                    {
+
+                                        foreach (var sube in item.Sube)
+                                        {
+                                            <div class="mb-1">
+                                                @sube.Name <a class="btn btn-primary btn-sm" asp-action="Edit" asp-controller="Restaurant" asp-area="B2B" asp-route-id="@sube.RestaurantId">Edit</a>
+                                                @if (sube.Address != null)
+                                                {
+                                                    <small>Adres :  @sube.Address.AddressName</small>
+                                                }
+                                                else
+                                                {
+                                                    <a class="btn btn-success btn-sm" asp-action="Create" asp-controller="Address" asp-area="B2B" asp-route-restaurantId="@sube.RestaurantId">Adres Ekle</a>
+
+                                                }
+                                                @if (sube.Menu != null)
+                                                {
+                                                    @sube.Menu.Name
+                                                }
+                                                else
+                                                {
+                                                    <a class="btn btn-success btn-sm" asp-action="CreateMenuRestaurant" asp-area="B2B" asp-controller="Menu" asp-route-id="@sube.RestaurantId">Menu Ekle</a>
+                                                }
+                                            </div><br />
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span>Yok</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.Menu != null)
+                                    {
+                                        @item.Menu.Name
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-success" asp-action="CreateMenuRestaurant" asp-area="B2B" asp-controller="Menu" asp-route-id="@item.RestaurantId">Menu Ekle</a>
+                                    }
+
+                                </td>
+                                <td>
+                                    <a class="btn btn-primary" asp-action="Edit" asp-controller="Restaurant" asp-area="B2B" asp-route-id="@item.RestaurantId">Edit</a>
+                                    <a class="btn btn-danger" asp-action="Delete" asp-controller="Restaurant" asp-area="B2B" asp-route-id="@item.RestaurantId">Delete</a>
+                                    <a class="btn btn-success" asp-action="CreateSube" asp-area="B2B" asp-controller="Restaurant" asp-route-id="@item.RestaurantId">Sube Ekle</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger">Veri dönüşü olmadı.</div>
+            </div>
+        </div>
+    }
+</div>

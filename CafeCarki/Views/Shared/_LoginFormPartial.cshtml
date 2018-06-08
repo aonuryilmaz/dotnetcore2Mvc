@@ -1,0 +1,29 @@
+﻿
+@model CafeCarki.ViewModels.LoginViewModel
+<form asp-controller="Home" asp-action="Index" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Email">E-posta</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password">Şifre</label>
+        <input asp-for="Password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="row mt-3 mb-4">
+        <div class="col-6">
+            <button type="submit" class="btn btn-primary ">Giriş Yap</button>
+        </div>
+        <div class="col-6 text-right">
+            <a class="btn btn-success" asp-action="Register" asp-controller="Home">Kayıt ol</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 text-right">
+            <a asp-controller="Account" asp-action="ForgotPassword">Şifremi Unuttum</a>
+        </div>
+    </div>
+</form>

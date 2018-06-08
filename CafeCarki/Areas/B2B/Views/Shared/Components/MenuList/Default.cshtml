@@ -1,0 +1,33 @@
+﻿@model CafeCarki.Areas.B2B.ViewModels.MenuListViewModel
+<div class="row">
+    @if (Model != null)
+    {
+        <div class="col-12">
+            @if (Model.RootMenu != null)
+            {
+                <a class="btn btn-link" asp-action="Index" asp-route-id="@Model.RootMenu.ParentId" asp-controller="Menu" asp-area="B2B"><i class="fa fa-arrow-left pr-1"></i>Geri</a>
+                
+            }
+        </div>
+        <div class="col-12 mt-1">
+            <div class="list-group">
+                @if (Model.RootMenu != null)
+                {
+                    <span class="list-group-item active">@Model.RootMenu.Title</span>
+                }
+                @foreach (var item in Model.MenuList)
+                {
+                    @if (item.isContainer)
+                    {
+                        <a class="list-group-item" asp-action="Index" asp-controller="Menu" asp-area="B2B" asp-route-id="@item.MenuId">@item.Title</a>
+                    }
+                    else
+                    {
+
+                        <div class="list-group-item">@item.Title <span>Fiyat:@item.Price</span></div>
+                    }
+                }
+            </div>
+        </div>
+    }
+</div>

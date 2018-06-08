@@ -1,0 +1,55 @@
+﻿@model CafeCarki.Areas.SysOp.ViewModels.AddUserToRoleViewModel
+
+<div class="container-fluid">
+    @if (Model != null)
+    {
+        <div class="row">
+            <div class="col-12">
+                <h1>Role Ekleme</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                @if (Model.User != null)
+                {
+                    <input class="form-control" value="@Model.User.Email" disabled />
+                    <br />
+                    <input class="form-control" value="@Model.User.Id" disabled />
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4 mt-2">
+                @if (Model.Roles != null)
+                {
+                    <form asp-controller="UserRole" asp-action="AddUserToRole" asp-route-area="SysOp" method="post">
+                        @foreach (var item in Model.Roles)
+                        {
+                            string chck = "";
+                            for (int i = 0; i < Model.ActiveRoles.Count; i++)
+                            {
+                                if (item.Name == Model.ActiveRoles[i])
+                                {
+                                    chck = "checked";
+
+                                }
+                            }
+                            <div class="form-check">
+                                <input type="checkbox" id="@item.Id" class="form-check-input" name="RoleIdList" value="@item.Id" @chck />
+                                <label class="form-check-label" for="@item.Id">
+                                    @item.Name
+                                </label>
+                            </div>
+                        }
+                        <input type="hidden" name="UserId" value="@Model.User.Id" />
+                        <button type="submit" class="btn btn-primary">Add</button>
+
+                    </form>
+                }
+            </div>
+        </div>
+    }
+
+</div>
+

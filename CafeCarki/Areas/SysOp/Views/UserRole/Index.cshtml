@@ -1,0 +1,67 @@
+﻿@model List<CafeCarki.Areas.SysOp.ViewModels.RoleListViewModel>
+<div class="container-fluid mt-4">
+    @if (ViewBag.Msg != null)
+    {
+        <div class="alert alert-info" id="alertmsg" role="alert">
+            <strong>@ViewBag.Msg</strong>
+        </div>
+    }
+
+
+    <form class="form-inline" asp-controller="UserRole" asp-action="CreateRole" asp-area="SysOp">
+        <div class="form-group">
+            <label class="form-control-label font-weight-thin">Create Role</label>
+            <input type="text" class="form-control mx-sm-3" name="RoleName" placeholder="Role Name" />
+        </div>
+        <button type="submit" class="btn btn-outline-primary">Create</button>
+    </form>
+    <div class="row mt-2">
+        <div class="col-12">
+            <table class="table table-sm table-hover table-bordered">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>RoleId</th>
+                        <th>RoleName</th>
+                        <th>ConcurrencyStamp</th>
+                        <th>Users in Role</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.RoleId</td>
+                                <td>
+                                    @item.RoleName
+                                    <br />
+                                    <small>@item.NormalizedRoleName</small>
+                                </td>
+                                <td>
+                                    @item.ConcurrencyStamp
+                                </td>
+                                <td>
+                                    @item.NumberOfUsersInRole.ToString()
+                                </td>
+                                <td>
+                                    <a class="btn btn-danger btn-sm" role="button" asp-action="DeleteRole" asp-controller="UserRole" asp-route-area="SysOp" asp-route-roleId="@item.RoleId">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+    <script>
+        setTimeout(function () {
+            $('#alertmsg').alert('close');
+        }, 2500);
+    </script>
+</div>

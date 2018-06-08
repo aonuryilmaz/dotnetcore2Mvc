@@ -1,0 +1,49 @@
+﻿@model CafeCarki.Areas.SysOp.ViewModels.UserEditViewModel
+<div class="container body-box mt-1 mb-1">
+    <div class="row mt-2">
+        <div class="col-12">
+            <h1 class="font-size-xl">Kullanıcı Düzenle</h1>
+        </div>
+    </div>
+    <form asp-action="Edit" asp-controller="User" asp-route-area="SysOp" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <input asp-for="UserId" />
+        <div class="row m-t-1">
+
+            <div class="col-xs-12 col-sm-3">Ad</div>
+
+            <div class="col-xs-12 col-sm-9"><input class="form-control" type="text" value="@Model.Name" disabled /></div>
+
+        </div>
+
+        <div class="row m-t-1">
+
+            <div class="col-xs-12 col-sm-3">Soyad</div>
+
+            <div class="col-xs-12 col-sm-9"><input class="form-control" type="text" value="@Model.Surname" disabled /></div>
+
+        </div>
+        <div class="row m-t-1">
+
+            <div class="col-xs-12 col-sm-3">Eposta</div>
+
+            <div class="col-xs-12 col-sm-9"><input type="text" class="form-control" value="@Model.Email" asp-for="Email" /></div>
+
+        </div>
+        <div class="row m-t-1">
+
+            <div class="col-xs-12 col-sm-3">Telefon</div>
+
+            <div class="col-xs-12 col-sm-9"><input type="text" class="form-control" value="@Model.MobilePhone" asp-for="MobilePhone" /></div>
+
+        </div>
+        <div class="row m-t-1">
+
+            <div class="col-xs-12 col-sm-3"></div>
+
+            <div class="col-xs-12 col-sm-9"><button type="submit" class="btn btn-primary">Degistir</button></div>
+
+        </div>
+    </form>
+    <a asp-action="Index" asp-controller="User" asp-area="SysOp">Kullanici listesi</a>
+</div>

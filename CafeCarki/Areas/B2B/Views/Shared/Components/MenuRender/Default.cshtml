@@ -1,0 +1,50 @@
+﻿@model List<MenuRestaurant>
+
+@if (Model.Count > 0 && Model != null)
+{
+    @foreach (var item in Model)
+    {
+        <div class="row">
+            <div class="col-12 text-center bg-light">
+                <h4>Menu Adı : @item?.Name</h4>
+            </div>
+            <div class="col-12">
+                <div class="card-columns">
+
+                    @foreach (var category in item.MenuCategories)
+                    {
+                        <div class="card">
+                            <div class="card-header" style="background-color:#ffb000;">
+                                <h5 class="font-weight-bold"> @category.Name</h5>                               
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                @if (category.MenuCategories.Count > 0)
+                                {
+                                    @foreach (var subCat in category.MenuCategories)
+                                    {
+                                        <li class="list-group-item" style="background-color:#5b9b37">@subCat.Name</li>
+                                        @foreach (var subCatMenuItem in subCat.MenuItems)
+                                        {
+                                            string btnBg = "<i class=\"fa fa-check\"></i>";
+                                            string btnSccss = "<i class=\"fa fa-times\"></i>";
+                                            string btn = !subCatMenuItem.Broadcast ? btnSccss : btnBg;
+                                            <li class="list-group-item">- @subCatMenuItem.Name <span>@subCatMenuItem.Price</span> <span class="float-right"><a class="btn btn-sm" asp-action="ChangeVisible" asp-controller="Menu" asp-area="B2B" asp-route-id="@subCatMenuItem.MenuItemId">@Html.Raw(btn)</a></span></li>
+                                        }
+                                    }
+
+                                }
+                                @foreach (var catMenuItem in category.MenuItems)
+                                {
+                                    string btnBg = "<i class=\"fa fa-check\"></i>";
+                                    string btnSccss = "<i class=\"fa fa-times\"></i>";
+                                    string btn = !catMenuItem.Broadcast ? btnSccss : btnBg;
+                                    <li class="list-group-item">@catMenuItem.Name <span>@catMenuItem.Price</span> <span class="float-right"><a class="btn btn-sm" asp-action="ChangeVisible" asp-controller="Menu" asp-area="B2B" asp-route-id="@catMenuItem.MenuItemId">@Html.Raw(btn)</a></span></li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}

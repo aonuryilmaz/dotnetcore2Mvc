@@ -1,0 +1,61 @@
+﻿
+<div class="container-fluid m-0 p-0">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color:rgb(212, 106, 106)">
+        @if (User.IsInRole("Mobile"))
+        {
+            <a class="navbar-brand" asp-action="Index" asp-controller="Home" asp-area="Mobile"><img height="40" src="/images/icons/cafeneredelogo.png" /></a>
+        }
+        else
+        {
+            <a class="navbar-brand" asp-action="Index" asp-controller="Home" asp-area="B2B"><img height="40" src="/images/icons/cafeneredelogo.png" /></a>
+
+        }
+        <span class="navbar-brand text-white">Cafe Nerede</span>
+        @if (User.IsInRole("Mobile"))
+        {
+            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#basketModal">
+                <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+            </button>
+        }
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                @if (User.IsInRole("Mobile"))
+                {
+
+
+                }
+                @if (User.IsInRole("SysOp"))
+                {
+
+                    <li class="nav-item @((ViewBag.menu=="Restaurant")?"active":"")">
+                        <a class="nav-link" asp-action="Index" asp-controller="Restaurant" asp-area="B2B">Restaurant</a>
+                    </li>
+                    <li class="nav-item @((ViewBag.menu=="Address")?"active":"")">
+                        <a class="nav-link" asp-action="Index" asp-controller="Address" asp-area="B2B">Address</a>
+                    </li>
+                    <li class="nav-item @((ViewBag.menu=="Menu")?"active":"")">
+                        <a class="nav-link" asp-action="Index" asp-controller="Menu" asp-area="B2B">Menu</a>
+                    </li>
+                    <li class="nav-item @((ViewBag.menu=="User")?"active":"")">
+                        <a class="nav-link" asp-action="Index" asp-controller="User" asp-area="SysOp">User</a>
+                    </li>
+                    <li class="nav-item @((ViewBag.menu=="UserRole")?"active":"")">
+                        <a class="nav-link" asp-action="Index" asp-controller="UserRole" asp-area="SysOp">User Role</a>
+                    </li>
+                    <li class="nav-item @((ViewBag.menu=="RestaurantManagement")?"active":"")">
+                        <a class="nav-link" asp-action="Index" asp-controller="RestaurantManagement" asp-area="SysOp">Restaurant Management</a>
+                    </li>
+                }
+                <li class="nav-item">
+                    <form asp-action="Logout" asp-controller="Home" asp-area="">
+                        <button class=" btn btn-link">Logout</button>
+                    </form>
+
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>

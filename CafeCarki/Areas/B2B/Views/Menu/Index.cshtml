@@ -1,0 +1,30 @@
+﻿@model List<MenuRestaurant>
+<div class="container">
+    @if (Model.Count > 0 && Model!=null)
+    {
+        <div class="row mt-2">
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Menu Name</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td>
+                                    <a class="btn btn-primary" asp-action="EditMenuRestaurant" asp-area="B2B" asp-controller="Menu" asp-route-MenuRestaurantId="@item.MenuRestaurantId">Edit</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+</div>

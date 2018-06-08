@@ -1,0 +1,21 @@
+﻿@model MenuItem
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <form asp-action="EditMenuItem" asp-controller="Menu" asp-area="B2B">
+                <input name="categoryId" value="@ViewBag.CategoryId" type="hidden" />
+                <input name="MenuRestaurantId" value="@ViewBag.MenuRestaurantId" type="hidden" />
+                <input asp-for="MenuItemId" type="hidden" />
+                <div class="form-group">
+                    <label asp-for="Name"></label>
+                    <input class="form-control" asp-for="Name"/>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Price"></label>
+                    <input class="form-control" asp-for="Price" />
+                </div>
+                <button class="btn btn-primary">Edit</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,82 @@
+﻿@model Restaurant
+<div class="row">
+    @if (Model.Menu != null)
+    {
+        <div class="col-12">
+            <div class="accordion mt-2">
+                @foreach (var category in Model?.Menu?.MenuCategories)
+                {
+                    <div class="card">
+                        <button class="btn btn-default collapsed text-white" style="background-color:#44a5f6" type="button" data-toggle="collapse" data-target="#@category.MenuCategoryId" aria-expanded="false" aria-controls="collapseTwo">
+                            @category.Name
+                        </button>
+                        <div id="@category.MenuCategoryId" class="collapse" data-parent="#accordion">
+                            <ul class="list-group list-group-flush">
+                                @if (category.MenuCategories.Count > 0)
+                                {
+                                    @foreach (var subCat in category.MenuCategories)
+                                    {
+                                        <a class="btn btn-default btn-block text-white" style="background-color:#c70918" data-toggle="collapse" href="#@subCat.MenuCategoryId" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                            @subCat.Name
+                                        </a>
+                                        <div class="collapse" id="@subCat.MenuCategoryId">
+                                            @foreach (var subCatMenuItem in subCat.MenuItems.Where(w => w.Broadcast==false))
+                                            {
+                                                <li class="list-group-item">- @subCatMenuItem.Name <span class="float-right">@subCatMenuItem.Price.ToString("C", new System.Globalization.CultureInfo("tr-TR"))</span><a class="btn btn-link" asp-action="AddBasket" asp-controller="Home" asp-area="Mobile" asp-route-SubeId="@Model.RestaurantId" asp-route-MenuItemId="@subCatMenuItem.MenuItemId"><i class="fa fa-plus" aria-hidden="true"></i></a></li>
+                                            }
+                                        </div>
+
+                                    }
+
+                                }
+                                @foreach (var catMenuItem in category.MenuItems.Where(w => w.Broadcast==false))
+                                {
+                                    <li class="list-group-item">@catMenuItem.Name <span class="float-right">@catMenuItem.Price.ToString("C", new System.Globalization.CultureInfo("tr-TR"))</span><a class="btn btn-link" asp-action="AddBasket" asp-controller="Home" asp-area="Mobile" asp-route-SubeId="@Model.RestaurantId" asp-route-MenuItemId="@catMenuItem.MenuItemId"><i class="fa fa-plus" aria-hidden="true"></i></a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col-12 mt-2">
+            <div class="alert alert-danger text-center">
+                <h4 class="text-white">Henüz menü oluşturulmadı.</h4>
+            </div>
+        </div>
+
+    }
+
+    <div class="col-12">
+        <hr />
+    </div>
+    <div class="col-12">
+        <h4 class="font-weight-bold">Yorumlar</h4>
+    </div>
+    <div class="col-12">
+        <form asp-action="CreateComment" asp-controller="Home" asp-area="Mobile" class="form-inline">
+            <input class="form-control" name="Yorum" placeholder="Yorum Yaz" />
+            <button class="btn btn-success btn-sm mt-1">Yeni Yorum Ekle</button>
+            <input type="hidden" name="id" value="@Model.RestaurantId" />
+        </form>
+    </div>
+    <div class="col-12 mt-1">
+        @if (Model.Comment != null)
+        {
+            @foreach (var item in Model.Comment)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="font-weight-bold">
+                            @item.UserName
+                        </h5>
+                        @item.Text
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

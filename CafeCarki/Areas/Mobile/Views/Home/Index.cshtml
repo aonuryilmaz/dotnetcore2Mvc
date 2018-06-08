@@ -1,0 +1,17 @@
+﻿@model List<Restaurant>
+<div class="row">
+    <div class="col-12 mt-3">
+        <div class="list-group">
+            @foreach (var item in Model)
+            {
+                string CssBtn = "font-weight-bold";
+                if (item.isSube)
+                {
+                    CssBtn = "";
+                }
+                <a class="list-group-item list-group-item-action @CssBtn" asp-action="Detail" asp-controller="Home" asp-area="Mobile" asp-route-id="@item.RestaurantId" >@item.Name<span class="badge badge-primary float-right"><i class="fa fa-comment mr-2" aria-hidden="true"></i>@item.Comment?.Count</span></a>
+
+            }
+        </div>
+    </div>
+</div>

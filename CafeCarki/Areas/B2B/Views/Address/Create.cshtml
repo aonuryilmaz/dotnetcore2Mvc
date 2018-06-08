@@ -1,0 +1,155 @@
+﻿@model CafeCarki.Models.Address
+<div class="container bg-white">
+    <div class="row mt-2">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-12">
+                    <div class="" id="mapArea" style="height: 400px;"></div>
+                </div>
+            </div>
+            <form asp-controller="Address" asp-action="Create" method="post" asp-route-returnUrl="@ViewData["ReturnUrl"]" >
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <h3 class="font-size-md font-weight-bold mt-3"> Adres Bilgileri</h3>
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                            <label asp-for="AddressName"></label>
+                            <input asp-for="AddressName" class="form-control" placeholder="Örnek : Ev Adresim">
+                            <span asp-validation-for="AddressName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                            <label asp-for="AddressStreet"></label>
+                            <textarea asp-for="AddressStreet" class="form-control" rows="4" placeholder="Mahalle,sokak,cadde ve diger bilgilerinizi giriniz" id="addressStreet"></textarea>
+                            <span asp-validation-for="AddressStreet" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                            <label asp-for="AddressDoor"></label>
+                            <textarea asp-for="AddressDoor" class="form-control" rows="4" placeholder="Apartman no ve kapı numarası bilgilerinizi giriniz" id="addressDoor"></textarea>
+                            <span asp-validation-for="AddressDoor" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <input asp-for="UseGeo" class="form-control" id="useGeo" type="hidden" value="notset" />
+                    <input asp-for="GeoLocationLatitude" class="form-control" id="geoLocationLatitude" type="hidden" />
+                    <input asp-for="GeoLocationLongitude" class="form-control" id="geoLocationLongitude" type="hidden" />
+                    <input asp-for="GeoLocationAccuracy" class="form-control" id="geoLocationAccuracy" type="hidden" />
+                    <input asp-for="AddressFromLocation" class="form-control" id="addressFromLocation" type="hidden" />
+                    <input asp-for="GeoError" class="form-control" id="geoError" type="hidden" value="" />
+                </div>
+                <input type="hidden" asp-for="UserId" value="@ViewBag.userId"  />
+                <input type="hidden" name="restaurantId" value="@ViewBag.restaurantId" />
+                <button type="submit" class="btn btn-success">Adresi Kaydet</button>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        var map, infoWindow, geocoder, marker, bermudaTriangle;
+        function initMap() {
+
+            map = new google.maps.Map(document.getElementById('mapArea'), {
+                center: { lat: 41.073944, lng: 29.007888 },
+                zoom: 10
+            });
+            infoWindow = new google.maps.InfoWindow;
+            geocoder = new google.maps.Geocoder;
+
+            marker = new google.maps.Marker({
+                map: map,
+                animation: google.maps.Animation.DROP,
+                draggable: true,
+                title: "Farklı Konum Seçin"
+            });
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    document.getElementById("geoLocationAccuracy").value = position.coords.accuracy;
+                    marker.setPosition(pos);
+                    google.maps.event.addListener(marker, "dragend", function (event) {
+                        var lat = event.latLng.lat();
+                        var lng = event.latLng.lng();
+                        var newpos = {
+                            lat: lat,
+                            lng: lng
+                        };
+                        infoWindow.close();
+                        infoWindow.setPosition(newpos);
+                        infoWindow.setContent('Yeni Konum Kullanılarak Adres Bilgileriniz Alınıyor...');
+                        geocodeLatLng(geocoder, map, infoWindow, newpos);
+                        infoWindow.open(map);
+                        map.setCenter(newpos);
+                    });
+                    infoWindow.setPosition(pos);
+                    infoWindow.setContent('Konumunuz Kullanılarak Adres Bilgileriniz Alınıyor...');
+                    geocodeLatLng(geocoder, map, infoWindow, pos);
+                    infoWindow.open(map);
+                    map.setCenter(pos);
+                }, function () {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
+            } else {
+                document.getElementById("useGeo").value = "false";
+                document.getElementById("useError").value = "browser doesnot support geolocation";
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+        }
+        function geocodeLatLng(geocoder, map, infowindow, pos) {
+            geocoder.geocode({ 'location': pos }, function (results, status) {
+                if (status === 'OK') {
+                    document.getElementById("useGeo").value = "true";
+                    document.getElementById("geoLocationLatitude").value = pos.lat;
+                    document.getElementById("geoLocationLongitude").value = pos.lng;
+
+
+                    if (results[0]) {
+                        map.setZoom(16);
+                        marker.setPosition(pos);
+                        infowindow.setContent(results[0].formatted_address);
+                        document.getElementById("addressFromLocation").value = results[0].formatted_address;
+                        document.getElementById('addressStreet').innerHTML = results[0].formatted_address;
+                        for (var componentsIndex in results[0].address_components) {
+                            if (results[0].address_components[componentsIndex].types[0] == 'postal_code') {
+                                document.getElementById('zipCode').value = results[0].address_components[componentsIndex].long_name;
+                            }
+                           
+                        }
+                        infowindow.open(map, marker);
+                    } else {
+                        document.getElementById("useGeo").value = "false";
+                        document.getElementById("useError").value = "address cannot be found";
+                    }
+                } else {
+                    document.getElementById("useGeo").value = "false";
+                    document.getElementById("useError").value = "geocoder failed due to : " + status;
+                }
+            });
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Konumunuz Bulunamadı' :
+                'Konumunuz Bulunamadı');
+            infoWindow.open(map);
+            document.getElementById("useGeo").value = "false";
+            document.getElementById("useError").value = "cannot find location"
+        }
+
+    </script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnI4m86MdSu5eYBLondGxRJbM29vDpEpE&callback=initMap"
+            async defer></script>
+    
+}

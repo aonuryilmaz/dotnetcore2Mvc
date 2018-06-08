@@ -1,0 +1,144 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Mobile Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!--===============================================================================================-->
+</head>
+<body class="containerbg">
+<i id="backButton" class="fa-2x fa-arrow-circle-left text-white fa" style="position:fixed;margin-top:10px;margin-left:14px"></i>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-10 mt-3">
+                <form class="login100-form validate-form" id="loginForm" asp-action="Index" asp-controller="Home">
+                    <span class="login100-form-logo mb-5">
+                        <img class="img-fluid mt-3" src="~/images/icons/cafeneredelogo.png" />
+                    </span>
+                    <div class="wrap-input100 validate-input" data-validate="">
+                        <input class="input100 login" type="text" name="Email" placeholder="E-posta">
+                        <span class="focus-input100" data-placeholder="&#xf207;"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="">
+                        <input class="input100 login" type="password" name="Password" placeholder="Şifre">
+                        <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <button class="login100-form-btn">
+                            Giriş
+                        </button>
+                    </div>
+                    <input type="hidden" name="MobileLogin" value="Ok" />
+                    <div class="text-center pt-4 pb-3">
+                        <a class="txt1" href="#" id="registerLink">
+                            Ücretsiz Üye Olun
+                        </a>
+                    </div>
+                </form>
+                <form class="login100-form validate-form" id="registerForm" asp-action="Register" asp-controller="Home">
+                    <span class="login100-form-logo mb-5">
+                        <img class="img-fluid mt-3" src="~/images/icons/cafeneredelogo.png" />
+                    </span>
+                    <h4 class="text-white mb-3">Ücretsiz Üye Olun</h4>
+                    <div class="wrap-input100 validate-input" data-validate="">
+                        <input class="input100 register" type="text" name="Email" placeholder="E-posta">
+                        <span class="focus-input100" data-placeholder="&#xf207;"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="">
+                        <input class="input100 register" type="text" name="Name" placeholder="Ad Soyad">
+                        <span class="focus-input100" data-placeholder="&#xf207;"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="">
+                        <input class="input100 register" type="password" name="Password" placeholder="Şifre">
+                        <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="">
+                        <input class="input100 register" type="password" name="ConfirmPassword" placeholder="Şifre Tekrar">
+                        <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                    </div>
+                    <input type="hidden" name="MobileRegister" value="ok" />
+                    <div class="container-login100-form-btn mb-3 pb-3">
+                        <button class="login100-form-btn">
+                            Kayıt Ol
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="dropDownSelect1"></div>
+
+    <!--===============================================================================================-->
+    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/animsition/js/animsition.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/bootstrap/js/popper.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/daterangepicker/moment.min.js"></script>
+    <script src="vendor/daterangepicker/daterangepicker.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/countdowntime/countdowntime.js"></script>
+    <!--===============================================================================================-->
+    <script src="js/main.js"></script>
+
+    <script>
+        $(function () {
+            var $regForm = $("#registerForm");
+            var $logForm = $("#loginForm");
+            var $backButton = $("#backButton");
+            $regForm.hide();
+            $backButton.hide();
+            $("#registerLink").on('click', function (e) {
+                e.preventDefault();
+                $logForm.hide(500, function () {
+                    $regForm.show('slow', function () {
+                        $backButton.show();
+                    })
+                });
+            })
+            $backButton.on('click', function () {
+                $regForm.hide(500, function () {
+                    $backButton.hide();
+                    $logForm.show(500);
+                })
+            })
+        })
+    </script>
+</body>
+</html>
